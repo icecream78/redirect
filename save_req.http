@@ -1,0 +1,6 @@
+POST http://localhost:8889/save HTTP/1.1
+content-type: application/json
+
+{
+    "url": "https://ya.ru"
+}
