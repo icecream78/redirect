@@ -7,8 +7,14 @@ class Handler(Database):
         Database.__init__(self)
 
     async def redirect(self, request):
-        query = request.query
-        print(query)
+        code = request.match_info.get('code', None)
+        if code is None:
+            return web.json_response({
+                'ok': False,
+                'result': 'No redirect code specified'
+            })
+        redirect_url = self.get_url(code)
+        return web.HTTPFound(redirect_url)
 
     async def save_redirect(self, request):
         try:
