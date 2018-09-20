@@ -1,10 +1,11 @@
+import os
 from aiohttp import web
 from models import Database
 
 
 class Handler(Database):
-    def __init__(self):
-        Database.__init__(self)
+    def __init__(self, use_external_db=False, db_path=os.path.join(os.curdir, 'record.db')):
+        Database.__init__(self, use_external_db, db_path)
 
     async def redirect(self, request):
         code = request.match_info.get('code', None)
@@ -14,6 +15,12 @@ class Handler(Database):
                 'result': 'No redirect code specified'
             })
         redirect_url = self.get_url(code)
+        if redirect_url is None:
+            return web.json_response({
+                'ok': False,
+                'result': 'No redirect url was found by code'
+            })
+
         return web.HTTPFound(redirect_url)
 
     async def save_redirect(self, request):

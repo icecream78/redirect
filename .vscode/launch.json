@@ -11,7 +11,8 @@
             "program": "${workspaceFolder}/server.py",
             "console": "integratedTerminal",
             "env": {
-                "PORT": 8886,
+                "PORT": 8882,
+                "USE_DB": true,
             }
         }
     ]
